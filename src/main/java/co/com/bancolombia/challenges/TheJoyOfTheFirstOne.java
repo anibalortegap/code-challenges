@@ -9,7 +9,39 @@ import java.util.stream.IntStream;
 public class TheJoyOfTheFirstOne {
 
     public int[] letsGoParty(int[] bigArray, int resultSize){
-        throw new UnsupportedOperationException();
+
+        return letsGoParty(bigArray, 0, bigArray.length -1, resultSize);
+    }
+
+    private static int[] letsGoParty(int[] bigArray, int low, int high, int resultSize){
+        if (low < high) {
+            int pivot = partition(bigArray, low, high);
+            if (pivot == resultSize) {
+                return Arrays.copyOf(bigArray, resultSize);
+            } else if (pivot < resultSize) {
+                return letsGoParty(bigArray, pivot + 1, high, resultSize);
+            } else {
+                return letsGoParty(bigArray, low, pivot - 1, resultSize);
+            }
+        }
+        return Arrays.copyOf(bigArray, resultSize);
+    }
+
+    private static int partition(int[] bigArray, int low, int high) {
+        int pivot = bigArray[high];
+        int i = low - 1;
+        for (int j = low; j < high; j++) {
+            if (bigArray[j] <= pivot) {
+                i++;
+                int temp = bigArray[i];
+                bigArray[i] = bigArray[j];
+                bigArray[j] = temp;
+            }
+        }
+        int temp = bigArray[i + 1];
+        bigArray[i + 1] = bigArray[high];
+        bigArray[high] = temp;
+        return i + 1;
     }
 
 
@@ -24,6 +56,7 @@ public class TheJoyOfTheFirstOne {
         final int[] solution = joy.letsGoParty(array, 50);
         System.out.println("Time: " + (System.currentTimeMillis()-init) + "ms");
         System.out.println("Fin");
+        System.out.println("First 50: " + Arrays.toString(solution));
     }
 
 }
